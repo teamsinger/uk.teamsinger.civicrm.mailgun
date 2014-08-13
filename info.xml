@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<extension key="com.89pies.civicrm.mailgun" type="module">
+  <file>mailgun</file>
+  <name>Mailgun</name>
+  <description>Mailgun integration for CiviCRM</description>
+  <urls>
+    <url desc="Main Extension Page">http://civicrm.89pies.com/mailgun</url>
+    <url desc="Support">https://github.com/tomsinger/com.89pies.civicrm.mailgun/wiki/Support</url>
+  </urls>
+  <license>MIT</license>
+  <maintainer>
+    <author>Tom Singer</author>
+    <email>tomsinger@gmail.com</email>
+  </maintainer>
+  <releaseDate>2014-08-13</releaseDate>
+  <version>1.0</version>
+  <develStage>alpha</develStage>
+  <compatibility>
+    <ver>4.2</ver>
+  </compatibility>
+  <comments>Support is via Github issues - Pull Requests always welcomed!</comments>
+  <civix>
+    <namespace>CRM/Mailgun</namespace>
+  </civix>
+</extension>
