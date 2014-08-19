@@ -28,6 +28,16 @@ function mailgun_civicrm_xmlMenu(&$files) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
  */
 function mailgun_civicrm_install() {
+  require_once "CRM/Core/DAO.php";
+
+  CRM_Core_DAO::executeQuery("
+  CREATE TABLE IF NOT EXISTS `mailgun_bounces` (
+    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `processed` INT(1) NOT NULL DEFAULT 0,
+    `email` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  ");
+
   return _mailgun_civix_civicrm_install();
 }
 
@@ -37,6 +47,10 @@ function mailgun_civicrm_install() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
  */
 function mailgun_civicrm_uninstall() {
+  require_once "CRM/Core/DAO.php";
+
+  CRM_Core_DAO::executeQuery("DROP TABLE mailgun_bounces");
+
   return _mailgun_civix_civicrm_uninstall();
 }
 
@@ -46,6 +60,8 @@ function mailgun_civicrm_uninstall() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
  */
 function mailgun_civicrm_enable() {
+  // @todo Add Mail Protocol - Option Value
+
   return _mailgun_civix_civicrm_enable();
 }
 
@@ -55,6 +71,8 @@ function mailgun_civicrm_enable() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
  */
 function mailgun_civicrm_disable() {
+  // @todo Remove Mail Protocol - Option Value
+
   return _mailgun_civix_civicrm_disable();
 }
 
