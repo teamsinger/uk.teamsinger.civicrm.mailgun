@@ -68,9 +68,6 @@ print "Getting store from plugin\n";
       case 'Localdir':
         return new CRM_Mailing_MailStore_Localdir($dao->source);
 
-      case 'Database':
-        return new CRM_Mailing_MailStore_Database($dao->source);
-
       // DO NOT USE the mbox transport for anything other than testing
       // in particular, it does not clear the mbox afterwards
 
@@ -78,6 +75,18 @@ print "Getting store from plugin\n";
         return new CRM_Mailing_MailStore_Mbox($dao->source);
 
       default:
+        $class_name = 'CRM_Mailing_MailStore_' . $protocols[$dao->protocol];
+
+        /*
+         * Whilst this may seem the logical way to test for the class it will cause errors if it does not exist
+         * This is because the autoloader will try and require_once the classname without checking for the existance of the file
+         * This still seems the best way to implement this as if this falls back then the app will throw an exception anyway
+         * In an ideal world the autoloader would also throw an exception if the file does not exist which could have been caught here
+         */
+        if (class_exists($class_name)) {
+          return new $class_name($dao->username, $dao->password);
+        }
+
         throw new Exception("Unknown protocol {$dao->protocol}");
     }
   }
