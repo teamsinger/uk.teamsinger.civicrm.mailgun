@@ -8,8 +8,6 @@ require_once 'mailgun.civix.php';
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_config
  */
 function mailgun_civicrm_config(&$config) {
-file_put_contents('/tmp/bounces', print_r($config, true), FILE_APPEND);
-
   _mailgun_civix_civicrm_config($config);
 }
 
