@@ -12,9 +12,16 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
 
     static $store = null;
 
-    $event = CRM_Utils_Request::retrieve('event', 'STRING', $store, false, null, 'POST');
+    $event = CRM_Utils_Request::retrieve('event', 'String', $store, false, null, 'POST');
 
-    file_put_contents('/tmp/bounces', print_r($_POST, true), FILE_APPEND);
+    $headers = '';
+
+    foreach (getallheaders() as $name => $value) {
+      $headers .= "$name: $value\n";
+    }
+
+    file_put_contents('/tmp/bounces', $headers, FILE_APPEND);
+    file_put_contents('/tmp/bounces', print_r($_REQUEST, true), FILE_APPEND);
 
     parent::run();
   }
