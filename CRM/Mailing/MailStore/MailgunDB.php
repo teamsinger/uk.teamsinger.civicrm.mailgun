@@ -64,7 +64,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
 
     }
 
-    $query = "SELECT * FROM mailgun_bounces WHERE processed = 0";
+    $query = "SELECT * FROM mailgun_bounces WHERE processed = 0 AND ignored = 0";
     $query_params = array();
 
     if ($count > 0) {
@@ -73,6 +73,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
     }
 
     $dao = CRM_Core_DAO::executeQuery($query, $query_params);
+
     while ($dao->fetch()) {
       $set = new ezcMailVariableSet($dao->email);
 
@@ -110,7 +111,11 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
       print "marking $id as ignored\n";
     }
 
-    // @todo write code
+    $query_params = array(
+      1 => array($id, 'String'),
+    );
+
+    CRM_Core_DAO::executeQuery("UPDATE mailgun_bounces SET ignored = 1 WHERE id = %1", $query_params);
   }
 
   /**
@@ -125,7 +130,11 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
       print "marking $id as processed\n";
     }
 
-    // @todo write code
+    $query_params = array(
+      1 => array($id, 'String'),
+    );
+
+    CRM_Core_DAO::executeQuery("UPDATE mailgun_bounces SET processed = 1 WHERE id = %1", $query_params);
   }
 }
 

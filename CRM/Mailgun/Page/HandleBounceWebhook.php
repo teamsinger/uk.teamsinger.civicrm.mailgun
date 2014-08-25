@@ -12,7 +12,17 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
 
     static $store = null;
 
-    $event = CRM_Utils_Request::retrieve('event', 'String', $store, false, null, 'POST');
+    $error = CRM_Utils_Request::retrieve('error', 'String', $store, false, null, 'POST');
+
+    $message_headers_raw = CRM_Utils_Request::retrieve('message-headers', 'String', $store, false, null, 'POST');
+
+    $message_headers_array = json_decode($message_headers_raw);
+
+    $message_headers = array();
+
+    foreach ($message_headers_array AS $header) {
+      $message_headers[trim($header[0])] = trim($header[1]);
+    }
 
     $headers = '';
 
@@ -20,8 +30,43 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
       $headers .= "$name: $value\n";
     }
 
-    file_put_contents('/tmp/bounces', $headers, FILE_APPEND);
-    file_put_contents('/tmp/bounces', print_r($_REQUEST, true), FILE_APPEND);
+    // Build simplest email for Civi to parse data out of
+
+    $email = '';
+
+    if (isset($message_headers['X-Civimail-Bounce'])) {
+      $x_civimail_bounce = $message_headers['X-Civimail-Bounce'];
+      $email .= "Delivered to: " . $x_civimail_bounce  . "\n";
+    } else {
+      $return_path = '';
+    }
+
+    if (isset($message_headers['Received'])) {
+      $email .= "Received: " . $message_headers['Received'] . "\n";
+    }
+
+    $email .= "Return-Path: <>\n";
+    $email .= "X-Civimail-Bounce: " . $x_civimail_bounce . "\n";
+    $email .= "To: <" . $x_civimail_bounce . ">\n";
+    $email .= "From: <postmaster@local>\n";
+
+    if (isset($message_headers['Date'])) {
+      $email .= "Date: " . $message_headers['Date'] . "\n";
+    }
+
+    if (isset($message_headers['Subject'])) {
+      $email .= "Subject: " . $message_headers['Subject'] . "\n\n";
+    }
+
+    $email .= $error . "\n";
+
+
+    $query_params = array(
+      1 => array($email, 'String'),
+    );
+
+    CRM_Core_DAO::executeQuery("INSERT INTO mailgun_bounces
+      (email) VALUES (%1)", $query_params);
 
     parent::run();
   }
