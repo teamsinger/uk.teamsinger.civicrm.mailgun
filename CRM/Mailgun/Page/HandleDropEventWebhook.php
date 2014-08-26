@@ -2,17 +2,18 @@
 
 require_once 'CRM/Core/Page.php';
 
-class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
+class CRM_Mailgun_Page_HandleDropEventWebhook extends CRM_Core_Page {
   function run() {
     // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-    CRM_Utils_System::setTitle(ts('HandleBounceWebhook'));
+    CRM_Utils_System::setTitle(ts('HandleDropEventWebhook'));
 
     // Example: Assign a variable for use in a template
     $this->assign('currentTime', date('Y-m-d H:i:s'));
 
     static $store = null;
 
-    $error = CRM_Utils_Request::retrieve('error', 'String', $store, false, null, 'POST');
+    $description = CRM_Utils_Request::retrieve('description', 'String', $store, false, null, 'POST');
+    $reason = CRM_Utils_Request::retrieve('reason', 'String', $store, false, null, 'POST');
 
     $message_headers_raw = CRM_Utils_Request::retrieve('message-headers', 'String', $store, false, null, 'POST');
 
@@ -58,15 +59,16 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
       $email .= "Subject: " . $message_headers['Subject'] . "\n\n";
     }
 
-    $email .= $error . "\n";
+    $email .= $description . "\n";
 
 
     $query_params = array(
       1 => array($email, 'String'),
+      2 => array($reason, 'String'),
     );
 
-    CRM_Core_DAO::executeQuery("INSERT INTO mailgun_bounces
-      (email) VALUES (%1)", $query_params);
+    CRM_Core_DAO::executeQuery("INSERT INTO mailgun_drop_events
+      (email, reason) VALUES (%1, %2)", $query_params);
 
     parent::run();
   }

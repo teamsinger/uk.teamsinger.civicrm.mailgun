@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <menu>
   <item>
-    <path>civicrm/mailgun/bounces</path>
-    <page_callback>CRM_Mailgun_Page_HandleBounceWebhook</page_callback>
-    <title>HandleBounceWebhook</title>
+    <path>civicrm/mailgun/dropevent</path>
+    <page_callback>CRM_Mailgun_Page_HandleDropEventWebhook</page_callback>
+    <title>HandleDropEventWebhook</title>
     <access_callback>1</access_callback>
   </item>
 </menu>

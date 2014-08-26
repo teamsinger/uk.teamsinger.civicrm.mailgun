@@ -64,7 +64,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
 
     }
 
-    $query = "SELECT * FROM mailgun_bounces WHERE processed = 0 AND ignored = 0";
+    $query = "SELECT * FROM mailgun_drop_events WHERE processed = 0 AND ignored = 0";
     $query_params = array();
 
     if ($count > 0) {
@@ -115,7 +115,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
       1 => array($id, 'String'),
     );
 
-    CRM_Core_DAO::executeQuery("UPDATE mailgun_bounces SET ignored = 1 WHERE id = %1", $query_params);
+    CRM_Core_DAO::executeQuery("UPDATE mailgun_drop_events SET ignored = 1 WHERE id = %1", $query_params);
   }
 
   /**
@@ -140,7 +140,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
       1 => array($id, 'String'),
     );
 
-    CRM_Core_DAO::executeQuery("UPDATE mailgun_bounces SET processed = 1 WHERE id = %1", $query_params);
+    CRM_Core_DAO::executeQuery("UPDATE mailgun_drop_events SET processed = 1 WHERE id = %1", $query_params);
   }
 }
 
