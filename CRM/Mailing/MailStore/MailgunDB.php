@@ -130,6 +130,12 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
       print "marking $id as processed\n";
     }
 
+    // @todo Remove from Mailgun bounce list
+
+    // DELETE /<domain>/bounces/<address>
+
+
+
     $query_params = array(
       1 => array($id, 'String'),
     );
