@@ -31,7 +31,7 @@ function mailgun_civicrm_install() {
   require_once "CRM/Core/DAO.php";
 
   CRM_Core_DAO::executeQuery("
-  CREATE TABLE IF NOT EXISTS `mailgun_drop_events` (
+  CREATE TABLE IF NOT EXISTS `mailgun_events` (
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `processed` INT(1) NOT NULL DEFAULT 0,
     `ignored` INT(1) NOT NULL DEFAULT 0,
@@ -51,7 +51,7 @@ function mailgun_civicrm_install() {
 function mailgun_civicrm_uninstall() {
   require_once "CRM/Core/DAO.php";
 
-  CRM_Core_DAO::executeQuery("DROP TABLE mailgun_drop_events");
+  CRM_Core_DAO::executeQuery("DROP TABLE mailgun_events");
 
   return _mailgun_civix_civicrm_uninstall();
 }
