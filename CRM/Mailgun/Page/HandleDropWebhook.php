@@ -12,6 +12,7 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page {
 
     static $store = null;
 
+    $recipient = CRM_Utils_Request::retrieve('recipient', 'String', $store, false, null, 'POST');
     $description = CRM_Utils_Request::retrieve('description', 'String', $store, false, null, 'POST');
     $reason = CRM_Utils_Request::retrieve('reason', 'String', $store, false, null, 'POST');
 
@@ -63,12 +64,13 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page {
 
 
     $query_params = array(
-      1 => array($email, 'String'),
-      2 => array($reason, 'String'),
+      1 => array($recipient, 'String'),
+      2 => array($email, 'String'),
+      3 => array($reason, 'String'),
     );
 
     CRM_Core_DAO::executeQuery("INSERT INTO mailgun_events
-      (email, reason) VALUES (%1, %2)", $query_params);
+      (recipient, email, reason) VALUES (%1, %2, %3)", $query_params);
 
     parent::run();
   }

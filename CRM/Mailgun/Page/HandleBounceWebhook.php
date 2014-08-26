@@ -12,6 +12,7 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
 
     static $store = null;
 
+    $recipient = CRM_Utils_Request::retrieve('recipient', 'String', $store, false, null, 'POST');
     $error = CRM_Utils_Request::retrieve('error', 'String', $store, false, null, 'POST');
 
     $message_headers_raw = CRM_Utils_Request::retrieve('message-headers', 'String', $store, false, null, 'POST');
@@ -63,12 +64,13 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
     $reason = 'hardbounce';
 
     $query_params = array(
-      1 => array($email, 'String'),
-      2 => array($reason, 'String'),
+      1 => array($recipient, 'String'),
+      2 => array($email, 'String'),
+      3 => array($reason, 'String'),
     );
 
     CRM_Core_DAO::executeQuery("INSERT INTO mailgun_events
-      (email, reason) VALUES (%1, %2)", $query_params);
+      (recipient, email, reason) VALUES (%1, %2, %3)", $query_params);
 
     parent::run();
   }

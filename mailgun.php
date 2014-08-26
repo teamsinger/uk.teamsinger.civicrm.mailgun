@@ -35,7 +35,8 @@ function mailgun_civicrm_install() {
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `processed` INT(1) NOT NULL DEFAULT 0,
     `ignored` INT(1) NOT NULL DEFAULT 0,
-    `email` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL
+    `recipient` VARCHAR(254) COLLATE utf8_unicode_ci DEFAULT NULL,
+    `email` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL,
     `reason` VARCHAR(64) COLLATE utf8_unicode_ci DEFAULT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
   ");
