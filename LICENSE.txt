@@ -1,4 +1,4 @@
-Package: com.89pies.civicrm.mailgun
+Package: uk.teamsinger.civicrm.mailgun
 Copyright (c) 2014 Tom Singer <tomsinger@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -1,4 +1,4 @@
-com.89pies.civicrm.mailgun
+uk.teamsinger.civicrm.mailgun
 ==========================
 
 CiviCRM Mailgun Integration

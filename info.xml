@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<extension key="com.89pies.civicrm.mailgun" type="module">
+<extension key="uk.teamsinger.civicrm.mailgun" type="module">
   <file>mailgun</file>
   <name>Mailgun</name>
   <description>Mailgun integration for CiviCRM</description>
   <urls>
-    <url desc="Main Extension Page">http://civicrm.89pies.com/mailgun</url>
-    <url desc="Support">https://github.com/tomsinger/com.89pies.civicrm.mailgun/wiki/Support</url>
+    <url desc="Main Extension Page">http://civicrm.teamsinger.uk/mailgun</url>
+    <url desc="Support">https://github.com/teamsinger/uk.teamsinger.civicrm.mailgun/wiki/Support</url>
   </urls>
   <license>MIT</license>
   <maintainer>

@@ -169,7 +169,7 @@ function _mailgun_civix_civicrm_managed(&$entities) {
     $es = include $file;
     foreach ($es as $e) {
       if (empty($e['module'])) {
-        $e['module'] = 'com.89pies.civicrm.mailgun';
+        $e['module'] = 'uk.teamsinger.civicrm.mailgun';
       }
       $entities[] = $e;
     }
@@ -198,7 +198,7 @@ function _mailgun_civix_civicrm_caseTypes(&$caseTypes) {
       // throw new CRM_Core_Exception($errorMessage);
     }
     $caseTypes[$name] = array(
-      'module' => 'com.89pies.civicrm.mailgun',
+      'module' => 'uk.teamsinger.civicrm.mailgun',
       'name' => $name,
       'file' => $file,
     );
