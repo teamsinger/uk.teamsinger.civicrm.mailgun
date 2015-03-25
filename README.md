@@ -14,7 +14,7 @@ uk.teamsinger.civicrm.mailgun
 
 ### Skip IDS Checks
 
-When the webhooks are called these can trigger IDS checks in Civi. To get around this [CRM/Core/IDS.php](https://github.com/civicrm/civicrm-core/blob/master/CRM/Core/IDS.php) has been patched to allow additional paths to be skipped. These paths need adding by adding the following to settings.php (Drupal).
+When the webhooks are called these can trigger IDS checks in Civi. To get around this [CRM/Core/IDS.php](https://github.com/civicrm/civicrm-core/blob/master/CRM/Core/IDS.php) has been patched to allow additional paths to be skipped. These paths need adding by adding the following to settings.php (Drupal) or (base)/components/com_civicrm/civicrm.settings.php (Joomla).
 ```
 define( 'CIVICRM_IDS_SKIP', serialize( array('civicrm/mailgun/drop', 'civicrm/mailgun/bounce') ) );
 ```
