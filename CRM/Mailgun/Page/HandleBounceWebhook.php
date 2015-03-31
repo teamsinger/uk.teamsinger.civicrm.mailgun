@@ -60,6 +60,8 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
 
     $message_headers = array();
 
+	JLog::addLogger(array('text_file'=>'civicrm.php'), JLog::ALL, array('civicrm'));
+	JLog::add(print_r($message_headers_array,true), JLog::INFO, 'civicrm');
     foreach ($message_headers_array AS $header) {
       $message_headers[trim($header[0])] = trim($header[1]);
     }
