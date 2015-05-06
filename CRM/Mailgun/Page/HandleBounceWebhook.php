@@ -115,6 +115,6 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
     CRM_Core_DAO::executeQuery("INSERT INTO mailgun_events
       (recipient, email, post_data, reason) VALUES (%1, %2, %3, %4)", $query_params);
 
-    parent::run();
+    //~ parent::run();
   }
 }
