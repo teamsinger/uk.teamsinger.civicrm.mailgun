@@ -81,6 +81,7 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page {
       $x_civimail_bounce = $message_headers['X-Civimail-Bounce'];
       $email .= "Delivered to: " . $x_civimail_bounce  . "\n";
     } else {
+	  $x_civimail_bounce = '';
       $return_path = '';
     }
 
