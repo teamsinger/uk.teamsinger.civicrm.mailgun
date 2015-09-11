@@ -19,4 +19,23 @@ When the webhooks are called these can trigger IDS checks in Civi. To get around
 define( 'CIVICRM_IDS_SKIP', serialize( array('civicrm/mailgun/drop', 'civicrm/mailgun/bounce') ) );
 ```
 
+### Testing
+
+While Mailgun has a built in function to test webhooks, it is not very descriptive of the errors it receives. The bash script below proved useful (replace out APIKEY).
+
+```
+#!/bin/bash
+APIKEY="key-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+TIMESTAMP="$(date +%s)"
+TOKEN="IAmUsuallyRandom"
+SIGNITURE="$(echo -n "${TIMESTAMP}${TOKEN}" | openssl dgst -sha256 -hmac "${APIKEY}" | awk '{print $2}')"
+curl "http://example.com/index.php?option=com_civicrm&task=civicrm/mailgun/drop&format=raw" \
+    -F timestamp="$(TIMESTAMP)" \
+    -F token="$(TOKEN)" \
+    -F signature="$(SIGNITURE)"
+    -F recipient="john@example.com" \
+    -F description="test description" \
+    -F reason="Testing" \
+```
+
 Sponsored by [Whirled Cinema](https://www.whirledcinema.com)

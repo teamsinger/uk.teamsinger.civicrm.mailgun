@@ -128,3 +128,18 @@ function mailgun_civicrm_caseTypes(&$caseTypes) {
 function mailgun_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _mailgun_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
+
+/**
+ * Shim missing function "getallheaders" where php is not run as an apache module
+ */
+if (!function_exists('getallheaders')) {
+    function getallheaders() {
+		$headers = array();
+		foreach ($_SERVER as $name => $value) {
+			if (substr($name, 0, 5) == 'HTTP_') {
+				$headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+			}
+		}
+		return $headers;
+    }
+}

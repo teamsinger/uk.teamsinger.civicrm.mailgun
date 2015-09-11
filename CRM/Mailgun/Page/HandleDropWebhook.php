@@ -63,9 +63,11 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page {
 
 	//~ JLog::addLogger(array('text_file'=>'civicrm.php'), JLog::ALL, array('civicrm'));
 	//~ JLog::add(print_r($message_headers_array,true), JLog::INFO, 'civicrm');
-    foreach ($message_headers_array AS $header) {
-      $message_headers[trim($header[0])] = $header[1];
-    }
+	if (!empty($message_headers_array)) {
+		foreach ($message_headers_array AS $header) {
+		  $message_headers[trim($header[0])] = $header[1];
+		}
+	}
 
     $headers = '';
 
