@@ -30,12 +30,12 @@ TIMESTAMP="$(date +%s)"
 TOKEN="IAmUsuallyRandom"
 SIGNITURE="$(echo -n "${TIMESTAMP}${TOKEN}" | openssl dgst -sha256 -hmac "${APIKEY}" | awk '{print $2}')"
 curl "http://example.com/index.php?option=com_civicrm&task=civicrm/mailgun/drop&format=raw" \
-    -F timestamp="$(TIMESTAMP)" \
-    -F token="$(TOKEN)" \
-    -F signature="$(SIGNITURE)"
+    -F timestamp="${TIMESTAMP}" \
+    -F token="${TOKEN}" \
+    -F signature="${SIGNITURE}" \
     -F recipient="john@example.com" \
     -F description="test description" \
-    -F reason="Testing" \
+    -F reason="Testing"
 ```
 
 Sponsored by [Whirled Cinema](https://www.whirledcinema.com)
