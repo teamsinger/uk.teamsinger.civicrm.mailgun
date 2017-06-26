@@ -84,6 +84,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
       $mail = $parser->parseMail($set);
 
       if (!$mail) {
+        continue; // better to just skip this than kill the entire process
         return CRM_Core_Error::createAPIError(ts('Email ID %1 could not be parsed 3',
             array(1 => $dao->id)
           ));
