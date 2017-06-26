@@ -33,8 +33,8 @@
  *
  */
 
-require_once 'ezc/Base/src/ezc_bootstrap.php';
-require_once 'ezc/autoload/mail_autoload.php';
+// require_once 'ezc/Base/src/ezc_bootstrap.php';
+// require_once 'ezc/autoload/mail_autoload.php';
 class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
 
   /**
@@ -84,7 +84,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
       $mail = $parser->parseMail($set);
 
       if (!$mail) {
-        return CRM_Core_Error::createAPIError(ts('Email ID %1 could not be parsed',
+        return CRM_Core_Error::createAPIError(ts('Email ID %1 could not be parsed 3',
             array(1 => $dao->id)
           ));
       }
