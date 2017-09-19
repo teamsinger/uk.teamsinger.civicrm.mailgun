@@ -129,6 +129,13 @@ function mailgun_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _mailgun_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
+// https://docs.civicrm.org/dev/en/hooks-op-4/hooks/hook_civicrm_idsException/
+function mailgun_civicrm_idsException(&$skip) {
+  $skip[] = 'civicrm/mailgun/drop';
+  $skip[] = 'civicrm/mailgun/bounce';
+  $skip[] = 'civicrm/mailgun/unsubscribe';
+}
+
 /**
  * Shim missing function "getallheaders" where php is not run as an apache module
  */
