@@ -1,7 +1,6 @@
 <?php
 
 require_once 'CRM/Core/Page.php';
-require_once 'api/class.api.php';
 
 class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page {
   function run() {
@@ -17,39 +16,7 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page {
     $token = CRM_Utils_Request::retrieve('token', 'String', $store, false, null, 'POST');
     $signature = CRM_Utils_Request::retrieve('signature', 'String', $store, false, null, 'POST');
 
-    $api = new civicrm_api3();
-
-    $params = array();
-    $params['version'] = 3;
-    $params['name'] = 'mail_protocol';
-
-    $apiKey = '';
-
-    if ($api->OptionGroup->Getsingle( $params )) {
-      $optionGroupId = $api->id;
-
-      unset($params);
-      $params['version'] = 3;
-      $params['option_group_id'] = $optionGroupId;
-      $params['label'] = 'MailgunDB';
-
-      if ($api->OptionValue->Getsingle( $params )) {
-        $protocol = $api->weight;
-
-        unset($params);
-        $params['version'] = 3;
-        $params['protocol'] = $protocol;
-
-        if ($api->MailSettings->Getsingle( $params )) {
-          $apiKey = $api->password;
-        }
-      }
-    }
-
-    if ( $signature !== hash_hmac("sha256", $timestamp . $token, $apiKey) ) {
-      $msg = ts('Failed to verify signature');
-      CRM_Core_Error::fatal($msg);
-    }
+    CRM_Mailgun_Utils::checkSignature($timestamp, $token, $signature);
 
     $recipient = CRM_Utils_Request::retrieve('recipient', 'String', $store, false, null, 'POST');
     $description = CRM_Utils_Request::retrieve('description', 'String', $store, false, null, 'POST');
