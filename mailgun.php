@@ -104,7 +104,21 @@ function mailgun_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
  */
 function mailgun_civicrm_managed(&$entities) {
-  return _mailgun_civix_civicrm_managed($entities);
+  _mailgun_civix_civicrm_managed($entities);
+  $entities[] = [
+    'module' => 'uk.teamsinger.civicrm.mailgun',
+    'name' => 'MailgunDBMailProtocol',
+    'entity' => 'OptionValue',
+    'params' => [
+      'label' => ts('MailgunDB'),
+      'name' => 'MailgunDB',
+      'value' => 'MailgunDB',
+      'option_group_id' => 'mail_protocol',
+      'is_active' => TRUE,
+      'version' => 3,
+    ],
+  ];
+
 }
 
 /**
