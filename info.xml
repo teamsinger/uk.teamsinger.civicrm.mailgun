@@ -12,11 +12,11 @@
     <author>Tom Singer</author>
     <email>tomsinger@gmail.com</email>
   </maintainer>
-  <releaseDate>2014-08-13</releaseDate>
-  <version>1.1</version>
-  <develStage>alpha</develStage>
+  <releaseDate>2018-12-05</releaseDate>
+  <version>1.2</version>
+  <develStage>beta</develStage>
   <compatibility>
-    <ver>4.4</ver>
+    <ver>5.0</ver>
   </compatibility>
   <comments>Support is via Github issues - Pull Requests always welcomed!</comments>
   <civix>
