@@ -7,13 +7,13 @@ uk.teamsinger.civicrm.mailgun
 * Follow the instructions to install extensions manually in the [CiviCRM documentation](https://docs.civicrm.org/sysadmin/en/latest/customize/extensions/#installing-a-new-extension).
 * Go to Mail Account Settings (**Administer menu » CiviMail » Mail Accounts**) and click **Edit** next to the account that has "Bounce Processing" in the *Used For* column.
 [ to set the protocol for MailgunDB for the account used for Bounce Processing.
- * Set *Protocol* to **MailgunDB**.
- * Set *Password* to your Mailgun API Key.
- * Set *Email Domain* to your Mailgun domain (e.g. **mg.example.org**).
+  * Set *Protocol* to **MailgunDB**.
+  * Set *Password* to your Mailgun API Key.
+  * Set *Email Domain* to your Mailgun domain (e.g. **mg.example.org**).
 * In your Mailgun control panel, [Configure Webhooks](https://documentation.mailgun.com/api-webhooks.html#webhooks) setting under the **Legacy Webhooks** section:
- * Dropped messages to https://www.example.com/civicrm/mailgun/drop
- * Hard bounces to https://www.example.com/civicrm/mailgun/bounce
- * Unsubscribes to https://www.example.com/civicrm/mailgun/unsubscribe
+  * Dropped messages to https://www.example.com/civicrm/mailgun/drop
+  * Hard bounces to https://www.example.com/civicrm/mailgun/bounce
+  * Unsubscribes to https://www.example.com/civicrm/mailgun/unsubscribe
 
 
 ### Testing
