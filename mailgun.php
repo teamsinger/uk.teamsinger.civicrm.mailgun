@@ -31,14 +31,14 @@ function mailgun_civicrm_install() {
   require_once "CRM/Core/DAO.php";
 
   CRM_Core_DAO::executeQuery("
-  CREATE TABLE IF NOT EXISTS `mailgun_events` (
-    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `processed` INT(1) NOT NULL DEFAULT 0,
-    `ignored` INT(1) NOT NULL DEFAULT 0,
-    `recipient` VARCHAR(254) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `email` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL,
-    `post_data` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL,
-    `reason` VARCHAR(64) COLLATE utf8_unicode_ci DEFAULT NULL
+    CREATE TABLE IF NOT EXISTS `mailgun_events` (
+      `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      `processed` INT(1) NOT NULL DEFAULT 0,
+      `ignored` INT(1) NOT NULL DEFAULT 0,
+      `recipient` VARCHAR(254) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `email` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL,
+      `post_data` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL,
+      `reason` VARCHAR(64) COLLATE utf8_unicode_ci DEFAULT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
   ");
 
@@ -155,12 +155,12 @@ function mailgun_civicrm_idsException(&$skip) {
  */
 if (!function_exists('getallheaders')) {
     function getallheaders() {
-		$headers = array();
-		foreach ($_SERVER as $name => $value) {
-			if (substr($name, 0, 5) == 'HTTP_') {
-				$headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
-			}
-		}
-		return $headers;
+      $headers = array();
+      foreach ($_SERVER as $name => $value) {
+        if (substr($name, 0, 5) == 'HTTP_') {
+          $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+        }
+      }
+      return $headers;
     }
 }
