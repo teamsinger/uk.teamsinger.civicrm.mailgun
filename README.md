@@ -10,7 +10,7 @@ uk.teamsinger.civicrm.mailgun
  * Set *Protocol* to **MailgunDB**.
  * Set *Password* to your Mailgun API Key.
  * Set *Email Domain* to your Mailgun domain (e.g. **mg.example.org**).
-* (Legacy -- should be handled automatically by mailgun_civicrm_idsException hook) In your Mailgun control panel, [Configure Webhooks](https://documentation.mailgun.com/api-webhooks.html#webhooks) setting under the **Legacy Webhooks** section:
+* In your Mailgun control panel, [Configure Webhooks](https://documentation.mailgun.com/api-webhooks.html#webhooks) setting under the **Legacy Webhooks** section:
  * Dropped messages to https://www.example.com/civicrm/mailgun/drop
  * Hard bounces to https://www.example.com/civicrm/mailgun/bounce
  * Unsubscribes to https://www.example.com/civicrm/mailgun/unsubscribe
