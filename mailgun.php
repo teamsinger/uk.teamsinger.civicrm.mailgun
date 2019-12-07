@@ -28,7 +28,6 @@ function mailgun_civicrm_xmlMenu(&$files) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
  */
 function mailgun_civicrm_install() {
-  require_once "CRM/Core/DAO.php";
 
   CRM_Core_DAO::executeQuery("
     CREATE TABLE IF NOT EXISTS `mailgun_events` (
@@ -51,7 +50,6 @@ function mailgun_civicrm_install() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
  */
 function mailgun_civicrm_uninstall() {
-  require_once "CRM/Core/DAO.php";
 
   CRM_Core_DAO::executeQuery("DROP TABLE mailgun_events");
 

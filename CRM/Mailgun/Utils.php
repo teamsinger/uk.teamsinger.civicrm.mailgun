@@ -1,7 +1,5 @@
 <?php
 
-require_once 'api/class.api.php';
-
 /* Check the signature passed by Mailgun against the API key we have stored.
  *  If this is incorrect, it's not a legitimate message from Mailgun for our Mailgun account.
  *  Returns TRUE if successful, fatals out if not.

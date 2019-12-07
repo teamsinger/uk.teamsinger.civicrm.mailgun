@@ -1,7 +1,5 @@
 <?php
 
-require_once 'CRM/Core/Page.php';
-
 class CRM_Mailgun_Page_HandleDropUnsubscribe extends CRM_Core_Page {
   function run() {
 	  
