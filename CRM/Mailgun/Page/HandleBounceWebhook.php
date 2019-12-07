@@ -87,6 +87,8 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
       'type' => 'bounce',
       'msg' => 'Post received',
     ));
+
+    CRM_Utils_System::civiExit();
     //~ parent::run();
   }
 }

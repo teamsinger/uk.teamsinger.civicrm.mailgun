@@ -87,6 +87,8 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page {
       'type' => 'drop',
       'msg' => 'Post received',
     ));
+
+    CRM_Utils_System::civiExit();
     //~ parent::run();
   }
 }

@@ -104,6 +104,8 @@ class CRM_Mailgun_Page_HandleDropUnsubscribe extends CRM_Core_Page {
 			'type' => 'unsubscribe',
 			'msg' => 'Post received',
 		));
+
+		CRM_Utils_System::civiExit();
     //~ parent::run();
   }
 }
