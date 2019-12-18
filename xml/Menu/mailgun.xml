@@ -14,8 +14,8 @@
   </item>
   <item>
     <path>civicrm/mailgun/unsubscribe</path>
-    <page_callback>CRM_Mailgun_Page_HandleDropUnsubscribe</page_callback>
-    <title>HandleDropUnsubscribe</title>
+    <page_callback>CRM_Mailgun_Page_HandleUnsubscribeWebhook</page_callback>
+    <title>HandleUnsubscribeWebhook</title>
     <access_callback>1</access_callback>
   </item>
 </menu>

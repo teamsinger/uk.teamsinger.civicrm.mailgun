@@ -1,10 +1,10 @@
 <?php
 
-class CRM_Mailgun_Page_HandleDropUnsubscribe extends CRM_Core_Page {
+class CRM_Mailgun_Page_HandleUnsubscribeWebhook extends CRM_Core_Page {
   function run() {
 	  
     // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-    CRM_Utils_System::setTitle(ts('HandleDropUnsubscribe'));
+    CRM_Utils_System::setTitle(ts('HandleUnsubscribeWebhook'));
 
     // Example: Assign a variable for use in a template
     $this->assign('currentTime', date('Y-m-d H:i:s'));
@@ -15,7 +15,7 @@ class CRM_Mailgun_Page_HandleDropUnsubscribe extends CRM_Core_Page {
     $token = CRM_Utils_Request::retrieve('token', 'String', $store, false, null, 'POST');
     $signature = CRM_Utils_Request::retrieve('signature', 'String', $store, false, null, 'POST');
 
-    CRM_Mailgun_Utils::checkSignature($timestamp, $token, $signature);
+		CRM_Mailgun_Utils::checkSignature($timestamp, $token, $signature);
 
     $recipient = CRM_Utils_Request::retrieve('recipient', 'String', $store, false, null, 'POST');
     $reason = CRM_Utils_Request::retrieve('event', 'String', $store, false, null, 'POST');
