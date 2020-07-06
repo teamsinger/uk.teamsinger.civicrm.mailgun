@@ -1,0 +1,17 @@
+{
+    "name": "teamsinger/uk.teamsinger.civicrm.mailgun",
+    "type": "civicrm-extension",
+    "license": "MIT",
+    "description": "Mailgun bounce processor for CiviCRM",
+    "homepage": "https://github.com/teamsinger/uk.teamsinger.civicrm.mailgun",
+    "authors": [
+        {
+            "name": "Tom Singer",
+            "email": "tomsinger@gmail.com",
+            "homepage": "https://github.com/tomsinger"
+        }
+    ],
+    "require": {
+        "composer/installers": "dev-civicrm"
+    }
+}

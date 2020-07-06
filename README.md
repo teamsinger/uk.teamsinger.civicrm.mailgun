@@ -15,7 +15,6 @@ uk.teamsinger.civicrm.mailgun
   * Hard bounces to https://www.example.com/civicrm/mailgun/bounce
   * Unsubscribes to https://www.example.com/civicrm/mailgun/unsubscribe
 
-
 ### Testing
 
 While Mailgun has a built in function to test webhooks, it is not very descriptive of the errors it receives. The bash script below proved useful (replace the APIKEY and webhook endpoint with your own).
