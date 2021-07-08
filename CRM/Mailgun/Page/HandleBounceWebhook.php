@@ -1,8 +1,5 @@
 <?php
 
-require_once 'CRM/Core/Page.php';
-require_once 'api/class.api.php';
-
 class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
   function run() {
     // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
@@ -17,39 +14,7 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
     $token = CRM_Utils_Request::retrieve('token', 'String', $store, false, null, 'POST');
     $signature = CRM_Utils_Request::retrieve('signature', 'String', $store, false, null, 'POST');
 
-    $api = new civicrm_api3();
-
-    $params = array();
-    $params['version'] = 3;
-    $params['name'] = 'mail_protocol';
-
-    $apiKey = '';
-
-    if ($api->OptionGroup->Getsingle( $params )) {
-      $optionGroupId = $api->id;
-
-      unset($params);
-      $params['version'] = 3;
-      $params['option_group_id'] = $optionGroupId;
-      $params['label'] = 'MailgunDB';
-
-      if ($api->OptionValue->Getsingle( $params )) {
-        $protocol = $api->weight;
-
-        unset($params);
-        $params['version'] = 3;
-        $params['protocol'] = $protocol;
-
-        if ($api->MailSettings->Getsingle( $params )) {
-          $apiKey = $api->password;
-        }
-      }
-    }
-
-    if ( $signature !== hash_hmac("sha256", $timestamp . $token, $apiKey) ) {
-      $msg = ts('Failed to verify signature');
-      CRM_Core_Error::fatal($msg);      
-    }
+    CRM_Mailgun_Utils::checkSignature($timestamp, $token, $signature);
 
     $recipient = CRM_Utils_Request::retrieve('recipient', 'String', $store, false, null, 'POST');
     $error = CRM_Utils_Request::retrieve('error', 'String', $store, false, null, 'POST');
@@ -60,9 +25,14 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
 
     $message_headers = array();
 
-    foreach ($message_headers_array AS $header) {
-      $message_headers[trim($header[0])] = trim($header[1]);
-    }
+	//~ JLog::addLogger(array('text_file'=>'civicrm.php'), JLog::ALL, array('civicrm'));
+	//~ JLog::add(print_r($message_headers_array,true), JLog::INFO, 'civicrm');
+	if (!empty($message_headers_array)) {
+		foreach ($message_headers_array AS $header) {
+      if (empty($header[0])||empty($header[1])) continue; // skip non-conforming headers
+		  $message_headers[trim($header[0])] = $header[1];
+		}
+	}
 
     $headers = '';
 
@@ -78,6 +48,7 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
       $x_civimail_bounce = $message_headers['X-Civimail-Bounce'];
       $email .= "Delivered to: " . $x_civimail_bounce  . "\n";
     } else {
+      $x_civimail_bounce = '';
       $return_path = '';
     }
 
@@ -112,6 +83,12 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page {
     CRM_Core_DAO::executeQuery("INSERT INTO mailgun_events
       (recipient, email, post_data, reason) VALUES (%1, %2, %3, %4)", $query_params);
 
-    parent::run();
+    echo json_encode(array(
+      'type' => 'bounce',
+      'msg' => 'Post received',
+    ));
+
+    CRM_Utils_System::civiExit();
+    //~ parent::run();
   }
 }

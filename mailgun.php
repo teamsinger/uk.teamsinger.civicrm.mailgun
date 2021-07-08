@@ -28,17 +28,16 @@ function mailgun_civicrm_xmlMenu(&$files) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
  */
 function mailgun_civicrm_install() {
-  require_once "CRM/Core/DAO.php";
 
   CRM_Core_DAO::executeQuery("
-  CREATE TABLE IF NOT EXISTS `mailgun_events` (
-    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `processed` INT(1) NOT NULL DEFAULT 0,
-    `ignored` INT(1) NOT NULL DEFAULT 0,
-    `recipient` VARCHAR(254) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `email` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL,
-    `post_data` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL,
-    `reason` VARCHAR(64) COLLATE utf8_unicode_ci DEFAULT NULL
+    CREATE TABLE IF NOT EXISTS `mailgun_events` (
+      `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      `processed` INT(1) NOT NULL DEFAULT 0,
+      `ignored` INT(1) NOT NULL DEFAULT 0,
+      `recipient` VARCHAR(254) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `email` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL,
+      `post_data` MEDIUMTEXT COLLATE utf8_unicode_ci DEFAULT NULL,
+      `reason` VARCHAR(64) COLLATE utf8_unicode_ci DEFAULT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
   ");
 
@@ -51,7 +50,6 @@ function mailgun_civicrm_install() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
  */
 function mailgun_civicrm_uninstall() {
-  require_once "CRM/Core/DAO.php";
 
   CRM_Core_DAO::executeQuery("DROP TABLE mailgun_events");
 
@@ -104,7 +102,21 @@ function mailgun_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
  */
 function mailgun_civicrm_managed(&$entities) {
-  return _mailgun_civix_civicrm_managed($entities);
+  _mailgun_civix_civicrm_managed($entities);
+  $entities[] = [
+    'module' => 'uk.teamsinger.civicrm.mailgun',
+    'name' => 'MailgunDBMailProtocol',
+    'entity' => 'OptionValue',
+    'params' => [
+      'label' => ts('MailgunDB'),
+      'name' => 'MailgunDB',
+      'value' => 'MailgunDB',
+      'option_group_id' => 'mail_protocol',
+      'is_active' => TRUE,
+      'version' => 3,
+    ],
+  ];
+
 }
 
 /**
@@ -127,4 +139,26 @@ function mailgun_civicrm_caseTypes(&$caseTypes) {
  */
 function mailgun_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _mailgun_civix_civicrm_alterSettingsFolders($metaDataFolders);
+}
+
+// https://docs.civicrm.org/dev/en/hooks-op-4/hooks/hook_civicrm_idsException/
+function mailgun_civicrm_idsException(&$skip) {
+  $skip[] = 'civicrm/mailgun/drop';
+  $skip[] = 'civicrm/mailgun/bounce';
+  $skip[] = 'civicrm/mailgun/unsubscribe';
+}
+
+/**
+ * Shim missing function "getallheaders" where php is not run as an apache module
+ */
+if (!function_exists('getallheaders')) {
+    function getallheaders() {
+      $headers = array();
+      foreach ($_SERVER as $name => $value) {
+        if (substr($name, 0, 5) == 'HTTP_') {
+          $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+        }
+      }
+      return $headers;
+    }
 }
