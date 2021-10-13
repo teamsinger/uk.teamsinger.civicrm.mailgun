@@ -135,7 +135,7 @@ function _mailgun_civix_find_files($dir, $pattern) {
   }
 
   $todos = array($dir);
-  $result = array();
+  $result =[];
   while (!empty($todos)) {
     $subdir = array_shift($todos);
     foreach (_mailgun_civix_glob("$subdir/$pattern") as $match) {
@@ -210,7 +210,7 @@ function _mailgun_civix_civicrm_caseTypes(&$caseTypes) {
  *
  * The documentation for glob() says, "On some systems it is impossible to
  * distinguish between empty match and an error." Anecdotally, the return
- * result for an empty match is sometimes array() and sometimes FALSE.
+ * result for an empty match is sometimes[] and sometimes FALSE.
  * This wrapper provides consistency.
  *
  * @link http://php.net/glob
@@ -219,7 +219,7 @@ function _mailgun_civix_civicrm_caseTypes(&$caseTypes) {
  */
 function _mailgun_civix_glob($pattern) {
   $result = glob($pattern);
-  return is_array($result) ? $result : array();
+  return is_array($result) ? $result :[];
 }
 
 /**
@@ -253,7 +253,7 @@ function _mailgun_civix_insert_navigation_menu(&$menu, $path, $item, $parentId =
     $first = array_shift($path);
     foreach ($menu as $key => &$entry) {
       if ($entry['attributes']['name'] == $first) {
-        if (!$entry['child']) $entry['child'] = array();
+        if (!$entry['child']) $entry['child'] =[];
         $found = _mailgun_civix_insert_navigation_menu($entry['child'], implode('/', $path), $item, $key);
       }
     }

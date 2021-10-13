@@ -56,7 +56,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
    * @return array      array of ezcMail objects
    */
   function fetchNext($count = 0) {
-    $mails = array();
+    $mails =[];
 
     if ($this->_debug) {
 
@@ -65,7 +65,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
     }
 
     $query = "SELECT * FROM mailgun_events WHERE processed = 0 AND ignored = 0";
-    $query_params = array();
+    $query_params =[];
 
     if ($count > 0) {
       $query .= " LIMIT %1";

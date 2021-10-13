@@ -1,7 +1,9 @@
 <?php
 
-class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page {
-  function run() {
+class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page
+{
+  function run()
+  {
     // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
     CRM_Utils_System::setTitle(ts('HandleDropWebhook'));
 
@@ -21,19 +23,17 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page {
     $reason = CRM_Utils_Request::retrieve('reason', 'String', $store, false, null, 'POST');
 
     $message_headers_raw = CRM_Utils_Request::retrieve('message-headers', 'String', $store, false, null, 'POST');
-
     $message_headers_array = json_decode($message_headers_raw);
+    $message_headers =[];
 
-    $message_headers = array();
-
-	//~ JLog::addLogger(array('text_file'=>'civicrm.php'), JLog::ALL, array('civicrm'));
-	//~ JLog::add(print_r($message_headers_array,true), JLog::INFO, 'civicrm');
-	if (!empty($message_headers_array)) {
-		foreach ($message_headers_array AS $header) {
-      if (empty($header[0])||empty($header[1])) continue; // skip non-conforming headers
-		  $message_headers[trim($header[0])] = $header[1];
-		}
-	}
+    //~ JLog::addLogger(array('text_file'=>'civicrm.php'), JLog::ALL, array('civicrm'));
+    //~ JLog::add(print_r($message_headers_array,true), JLog::INFO, 'civicrm');
+    if (!empty($message_headers_array)) {
+      foreach ($message_headers_array as $header) {
+        if (empty($header[0]) || empty($header[1])) continue; // skip non-conforming headers
+        $message_headers[trim($header[0])] = $header[1];
+      }
+    }
 
     $headers = '';
 
@@ -44,20 +44,20 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page {
     // Build simplest email for Civi to parse data out of
 
     $email = '';
+    $return_path = '';
 
     if (isset($message_headers['X-Civimail-Bounce'])) {
       $x_civimail_bounce = $message_headers['X-Civimail-Bounce'];
       $email .= "Delivered to: " . $x_civimail_bounce  . "\n";
     } else {
-	  $x_civimail_bounce = '';
-      $return_path = '';
+      $x_civimail_bounce = '';
     }
 
     if (isset($message_headers['Received'])) {
       $email .= "Received: " . $message_headers['Received'] . "\n";
     }
 
-    $email .= "Return-Path: <>\n";
+    $email .= "Return-Path: <$return_path>\n";
     $email .= "X-Civimail-Bounce: " . $x_civimail_bounce . "\n";
     $email .= "To: <" . $x_civimail_bounce . ">\n";
     $email .= "From: <postmaster@local>\n";

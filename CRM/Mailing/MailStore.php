@@ -133,13 +133,13 @@ class CRM_Mailing_MailStore {
         print "fetching $count messages\n";
       }
     }
-    catch (ezcMailOffsetOutOfRangeException$e) {
+    catch (ezcMailOffsetOutOfRangeException $e) {
       if ($this->_debug) {
         print "got to the end of the mailbox\n";
       }
-      return array();
+      return[];
     }
-    $mails = array();
+    $mails =[];
     $parser = new ezcMailParser();
     //set property text attachment as file CRM-5408
     $parser->options->parseTextAttachmentsAsFiles = TRUE;
