@@ -50,7 +50,8 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page
       $x_civimail_bounce = $message_headers['X-Civimail-Bounce'];
       $email .= "Delivered to: " . $x_civimail_bounce  . "\n";
     } else {
-      $x_civimail_bounce = '';
+      // MailGun will report just a "recipient" when it has seen this email before
+      $x_civimail_bounce = $recipient;
     }
 
     if (isset($message_headers['Received'])) {
@@ -74,19 +75,24 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page
 
 
     $query_params = array(
-      1 => array($recipient, 'String'),
-      2 => array($email, 'String'),
-      3 => array(json_encode($_POST), 'String'),
-      4 => array($reason, 'String'),
+      1 => [$recipient, 'String'],
+      2 => [$email, 'String'],
+      3 => [json_encode($_POST), 'String'],
+      4 => [$reason, 'String'],
     );
 
-    CRM_Core_DAO::executeQuery("INSERT INTO mailgun_events
-      (recipient, email, post_data, reason) VALUES (%1, %2, %3, %4)", $query_params);
+    CRM_Core_DAO::executeQuery("
+      INSERT INTO mailgun_events
+        (recipient, email, post_data, reason)
+      VALUES
+        (%1, %2, %3, %4)
+    ", $query_params);
 
-    echo json_encode(array(
+    echo json_encode([
       'type' => 'drop',
       'msg' => 'Post received',
-    ));
+    ]);
+
 
     CRM_Utils_System::civiExit();
     //~ parent::run();
