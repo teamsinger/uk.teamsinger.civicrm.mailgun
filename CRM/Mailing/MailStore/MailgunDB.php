@@ -71,7 +71,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore
 
     if ($count > 0) {
       $query .= " LIMIT %1";
-      $query_params[1] = array($count, 'Int');
+      $query_params[1] = [$count, 'Int'];
     }
 
     $dao = CRM_Core_DAO::executeQuery($query, $query_params);
@@ -89,7 +89,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore
         continue; // better to just skip this than kill the entire process
         return CRM_Core_Error::createAPIError(ts(
           'Email ID %1 could not be parsed 3',
-          array(1 => $dao->id)
+          [1 => $dao->id]
         ));
       }
 
@@ -117,7 +117,7 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore
     }
 
     $query_params = array(
-      1 => array($id, 'String'),
+      1 => [$id, 'String'],
     );
 
     CRM_Core_DAO::executeQuery("UPDATE mailgun_events SET ignored = 1 WHERE id = %1", $query_params);
