@@ -147,6 +147,14 @@ function mailgun_civicrm_idsException(&$skip) {
   $skip[] = 'civicrm/mailgun/unsubscribe';
 }
 
+function mailgun_civicrm_alterMailStore(&$mailSettings) {
+  if ($mailSettings['protocol'] === 'MailgunDB') {
+    $mailSettings['factory'] = function ($mailSettings) {
+      return new CRM_Mailing_MailStore_MailgunDB($mailSettings['username'], $mailSettings['password']);
+    };
+  }
+}
+
 /**
  * Shim missing function "getallheaders" where php is not run as an apache module
  */

@@ -35,7 +35,8 @@
 
 // require_once 'ezc/Base/src/ezc_bootstrap.php';
 // require_once 'ezc/autoload/mail_autoload.php';
-class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
+class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore
+{
 
   /**
    * @param string $username  Mailgun username
@@ -43,9 +44,10 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
    *
    * @return void
    */
-  function __construct($username, $password) {
-    $this->_username= $username;
-    $this->_password= $password;
+  function __construct($username, $password)
+  {
+    $this->_username = $username;
+    $this->_password = $password;
   }
 
   /**
@@ -55,17 +57,17 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
    *
    * @return array      array of ezcMail objects
    */
-  function fetchNext($count = 0) {
-    $mails =[];
+  function fetchNext($count = 0)
+  {
+    $mails = [];
 
     if ($this->_debug) {
 
       print "fetching $count messages\n";
-
     }
 
     $query = "SELECT * FROM mailgun_events WHERE processed = 0 AND ignored = 0";
-    $query_params =[];
+    $query_params = [];
 
     if ($count > 0) {
       $query .= " LIMIT %1";
@@ -85,9 +87,10 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
 
       if (!$mail) {
         continue; // better to just skip this than kill the entire process
-        return CRM_Core_Error::createAPIError(ts('Email ID %1 could not be parsed 3',
-            array(1 => $dao->id)
-          ));
+        return CRM_Core_Error::createAPIError(ts(
+          'Email ID %1 could not be parsed 3',
+          array(1 => $dao->id)
+        ));
       }
 
       $mails[$dao->id] = $mail[0];
@@ -107,7 +110,8 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
    *
    * @return void
    */
-  function markIgnored($id) {
+  function markIgnored($id)
+  {
     if ($this->_debug) {
       print "marking $id as ignored\n";
     }
@@ -126,7 +130,8 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
    *
    * @return void
    */
-  function markProcessed($id) {
+  function markProcessed($id)
+  {
     if ($this->_debug) {
       print "marking $id as processed\n";
     }
@@ -144,4 +149,3 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore {
     CRM_Core_DAO::executeQuery("UPDATE mailgun_events SET processed = 1 WHERE id = %1", $query_params);
   }
 }
-
