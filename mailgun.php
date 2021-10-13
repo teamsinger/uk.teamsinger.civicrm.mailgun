@@ -51,7 +51,7 @@ function mailgun_civicrm_install() {
  */
 function mailgun_civicrm_uninstall() {
 
-  CRM_Core_DAO::executeQuery("DROP TABLE mailgun_events");
+  // CRM_Core_DAO::executeQuery("DROP TABLE IF EXISTS mailgun_events");
 
   return _mailgun_civix_civicrm_uninstall();
 }
@@ -110,7 +110,6 @@ function mailgun_civicrm_managed(&$entities) {
     'params' => [
       'label' => ts('MailgunDB'),
       'name' => 'MailgunDB',
-      'value' => 'MailgunDB',
       'option_group_id' => 'mail_protocol',
       'is_active' => TRUE,
       'version' => 3,
