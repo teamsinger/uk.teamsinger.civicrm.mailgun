@@ -25,8 +25,6 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page
     $message_headers_array = json_decode(json_decode($message_headers_raw, null, 512, JSON_THROW_ON_ERROR), null, 512, JSON_THROW_ON_ERROR);
     $message_headers = [];
 
-    //~ JLog::addLogger(array('text_file'=>'civicrm.php'), JLog::ALL, array('civicrm'));
-    //~ JLog::add(print_r($message_headers_array,true), JLog::INFO, 'civicrm');
     if (!empty($message_headers_array)) {
       foreach ($message_headers_array as $header) {
         if (empty($header[0]) || empty($header[1]))
@@ -69,12 +67,12 @@ class CRM_Mailgun_Page_HandleBounceWebhook extends CRM_Core_Page
 
     $reason = 'hardbounce';
 
-    $query_params = array(
+    $query_params = [
       1 => [$recipient, 'String'],
       2 => [$email, 'String'],
       3 => [json_encode($_POST), 'String'],
       4 => [$reason, 'String'],
-    );
+    ];
 
     CRM_Core_DAO::executeQuery("
       INSERT INTO mailgun_events

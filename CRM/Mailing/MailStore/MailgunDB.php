@@ -116,9 +116,9 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore
       print "marking $id as ignored\n";
     }
 
-    $query_params = array(
+    $query_params = [
       1 => [$id, 'String'],
-    );
+    ];
 
     CRM_Core_DAO::executeQuery("UPDATE mailgun_events SET ignored = 1 WHERE id = %1", $query_params);
   }
@@ -140,11 +140,9 @@ class CRM_Mailing_MailStore_MailgunDB extends CRM_Mailing_MailStore
 
     // DELETE /<domain>/bounces/<address>
 
-
-
-    $query_params = array(
-      1 => array($id, 'String'),
-    );
+    $query_params = [
+      1 => [$id, 'String'],
+    ];
 
     CRM_Core_DAO::executeQuery("UPDATE mailgun_events SET processed = 1 WHERE id = %1", $query_params);
   }
