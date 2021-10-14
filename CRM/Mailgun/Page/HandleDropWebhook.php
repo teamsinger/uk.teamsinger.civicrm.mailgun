@@ -10,7 +10,7 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page
     // Example: Assign a variable for use in a template
     $this->assign('currentTime', date('Y-m-d H:i:s'));
 
-    static $store = null;
+    $store = null;
 
     $timestamp = CRM_Utils_Request::retrieve('timestamp', 'String', $store, false, null, 'POST');
     $token = CRM_Utils_Request::retrieve('token', 'String', $store, false, null, 'POST');
@@ -23,56 +23,50 @@ class CRM_Mailgun_Page_HandleDropWebhook extends CRM_Core_Page
     $reason = CRM_Utils_Request::retrieve('reason', 'String', $store, false, null, 'POST');
 
     $message_headers_raw = CRM_Utils_Request::retrieve('message-headers', 'String', $store, false, null, 'POST');
-    $message_headers_array = json_decode($message_headers_raw);
+    $message_headers_array = json_decode(json_decode($message_headers_raw, null, 512, JSON_THROW_ON_ERROR), null, 512, JSON_THROW_ON_ERROR);
     $message_headers =[];
 
     //~ JLog::addLogger(array('text_file'=>'civicrm.php'), JLog::ALL, array('civicrm'));
     //~ JLog::add(print_r($message_headers_array,true), JLog::INFO, 'civicrm');
     if (!empty($message_headers_array)) {
       foreach ($message_headers_array as $header) {
-        if (empty($header[0]) || empty($header[1])) continue; // skip non-conforming headers
+        if (empty($header[0]) || empty($header[1]))
+          continue; // skip non-conforming headers
         $message_headers[trim($header[0])] = $header[1];
       }
-    }
-
-    $headers = '';
-
-    foreach (getallheaders() as $name => $value) {
-      $headers .= "$name: $value\n";
     }
 
     // Build simplest email for Civi to parse data out of
 
     $email = '';
-    $return_path = '';
+    $email .= "From: <postmaster@local>\r\n";
+    $email .= "Return-Path: <>\r\n";
 
+    $x_civimail_bounce = '';
     if (isset($message_headers['X-Civimail-Bounce'])) {
       $x_civimail_bounce = $message_headers['X-Civimail-Bounce'];
-      $email .= "Delivered to: " . $x_civimail_bounce  . "\n";
-    } else {
-      // MailGun will report just a "recipient" when it has seen this email before
-      $x_civimail_bounce = $recipient;
+      $email .= "X-Civimail-Bounce: " . $x_civimail_bounce . "\r\n";
+      $email .= "Delivered-To: " . $x_civimail_bounce  . "\r\n";
+      $email .= "To: <" . $x_civimail_bounce . ">\r\n";
     }
 
     if (isset($message_headers['Received'])) {
-      $email .= "Received: " . $message_headers['Received'] . "\n";
+      $email .= "Received: " . $message_headers['Received'] . "\r\n";
     }
 
-    $email .= "Return-Path: <$return_path>\n";
-    $email .= "X-Civimail-Bounce: " . $x_civimail_bounce . "\n";
-    $email .= "To: <" . $x_civimail_bounce . ">\n";
-    $email .= "From: <postmaster@local>\n";
-
     if (isset($message_headers['Date'])) {
-      $email .= "Date: " . $message_headers['Date'] . "\n";
+      $email .= "Date: " . $message_headers['Date'] . "\r\n";
     }
 
     if (isset($message_headers['Subject'])) {
-      $email .= "Subject: " . $message_headers['Subject'] . "\n\n";
+      $email .= "Subject: " . $message_headers['Subject'] . "\r\n\r\n";
     }
 
-    $email .= $description . "\n";
-
+    $email .= $description . "\r\n";
+    if ($description === 'Not delivering to previously bounced address') {
+      // Add it a bit to matching a bounce patter and get it matched
+      $email .= "RecipNotFound\r\n";
+    }
 
     $query_params = array(
       1 => [$recipient, 'String'],
